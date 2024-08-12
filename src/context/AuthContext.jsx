@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext,  useState } from "react";
 // import { auth } from "../firebase/config";
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -14,13 +14,30 @@ export const useAuth = () => {
   };
 
 
+
+
+
+
 export function AuthProvider({children}){
 
 
 
 
+
+  const [isRegister, setIsRegister] = useState(true);
+
+  const handleLoginAndRegister = () => {
+    setIsRegister(!isRegister)
+  }
+
+
+
+
+
+
+
     return (
-        <authContext.Provider value={{}}>
+        <authContext.Provider value={{isRegister, handleLoginAndRegister}}>
           {children}
         </authContext.Provider>
       );
