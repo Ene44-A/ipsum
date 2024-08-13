@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { Link } from "react-router-dom";
+import { authContext } from "../context/AuthContext";
 
 
 const UserTableContainer = () => {
 
     const [userInfo, setUserInfo] = useState([]);
+    const {handleViewUser} = useContext(authContext)
+
+
+
     const userRef = collection(db, "usuarios")
 
 
@@ -36,6 +41,7 @@ const UserTableContainer = () => {
                 </thead>
                 <tbody>
                     {
+                        userInfo &&
                         userInfo.map((e)=>{
                             return(
 
@@ -45,7 +51,7 @@ const UserTableContainer = () => {
                                     <td>{e.rol}</td>
                                     <td>@mdo</td>
                                     <td>
-                                        <button className="color-text" style={{fontSize:"10px"}}>
+                                        <button onClick={()=>{handleViewUser()}} className="color-text" style={{fontSize:"10px"}}>
                                             <Link to={`/usuarios/${e.id}`}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" style={{color:"white"}} width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
                                                     <path  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>

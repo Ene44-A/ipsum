@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {doc, getDoc } from "firebase/firestore";
 import { db } from "../fireBase/config";
-// import Usuario from "./Usuario";
+import Usuario from "./Usuario";
+import NavBar from "./NavBar";
 
 
 const DetalleUsuario = () => {
@@ -17,16 +18,18 @@ const DetalleUsuario = () => {
     .then((resp)=>{
       setUser({...resp.data(), id: resp.id});
     })
-  }, []);
+  }, [id]);
 
 console.log(user);
 
     return (
         <div>
+          <NavBar />
             DetalleUsuario
-            <p>
-                {/* <Usuario user={user} /> */}
-            </p>
+            {
+              user &&
+              <Usuario user={user} />
+            }
         </div>
     );
 }

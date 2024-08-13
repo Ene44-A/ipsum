@@ -14,30 +14,27 @@ export const useAuth = () => {
   };
 
 
-
-
-
-
 export function AuthProvider({children}){
 
 
-
-
-
   const [isRegister, setIsRegister] = useState(true);
+  const [viewUser, setViewUser] = useState(true);
 
   const handleLoginAndRegister = () => {
     setIsRegister(!isRegister)
+    if(isRegister){
+      console.log('registrar ');
+    }else{
+      console.log('login');
+    }
   }
-
-
-
-
-
-
+  const handleViewUser = () =>{
+    setViewUser(!viewUser)
+  }
+  // const handle
 
     return (
-        <authContext.Provider value={{isRegister, handleLoginAndRegister}}>
+        <authContext.Provider value={{isRegister, handleLoginAndRegister, viewUser, handleViewUser}}>
           {children}
         </authContext.Provider>
       );

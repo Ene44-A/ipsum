@@ -14,7 +14,9 @@ const Register = () => {
         })
         console.log(infoUsuario);
         const docRef = await doc(db, `usuarios/${infoUsuario.user.uid}`);
-        setDoc(docRef,{correo: email, rol: rol});
+        setDoc(docRef,{
+            correo: email,
+            rol: rol});
     }
 
     const {isRegister, handleLoginAndRegister} = useContext(authContext)
@@ -32,11 +34,11 @@ const Register = () => {
 
         if(isRegister){
             registrarUsuario(data.email, data.contrasena, rol)
+            console.log('Submit: ',email,password);
         }
     }
 
-    console.log('Submit: ',email,password);
-    console.log('is registre ', isRegister);
+    // console.log('is registre ', isRegister);
 
 
     return (
@@ -59,51 +61,57 @@ const Register = () => {
                         <div className="row row-cols-2">
                             <div className="form-group col">
                                 <label htmlFor="nombre">Nombre*</label>
-                                <input className="form-control form-control-sm" id="nombre" required type="text" {...register("nombre")} />
+                                <input className="form-control form-control-sm" required type="text" {...register("nombre")} />
                             </div>
                             <div className="form-group col">
                                 <label htmlFor="apellido">Apellido</label>
-                                <input className="form-control form-control-sm" id="apellido" required type="text" {...register("apellido")} />
+                                <input className="form-control form-control-sm"  required type="text" {...register("apellido")} />
                             </div>
 
                             <div className="form-group col">
                                 <label htmlFor="email">Email*</label>
-                                <input className="form-control form-control-sm" id="email" required type="email" {...register("email")} />
+                                <input className="form-control form-control-sm"  required type="email" {...register("email")} />
                             </div>
                             <div className="form-group col">
                                 <label htmlFor="telefono">Teléfono*</label>
-                                <input className="form-control form-control-sm" id="telefono" required type="phone" {...register("telefono")} />
+                                <input className="form-control form-control-sm"  required type="phone" {...register("telefono")} />
                             </div>
                             <div className="form-group col">
                                 <label htmlFor="pais">País</label>
-                                <input className="form-control form-control-sm" id="pais" required type="text" {...register("pais")} />
+                                <input className="form-control form-control-sm"  required type="text" {...register("pais")} />
                             </div>
                         </div>
                         <div className="row row-cols-2">
+
+
+
                             <div className="form-group col">
                                 <label htmlFor="comidaFavorita">Comida favorita</label>
-                                <input className="form-control form-control-sm" id="comida" required type="text" {...register("comida")} />
+                                <input className="form-control form-control-sm"  required type="text" {...register("pregunta1")} />
                             </div>
                             <div className="form-group col">
                                 <label htmlFor="artistaFavorito">Artista favorito</label>
-                                <input className="form-control form-control-sm" id="artista" required type="text" {...register("artista")} />
+                                <input className="form-control form-control-sm"  required type="text" {...register("pregunta2")} />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="lugarFavorito">Lugar favorito</label>
-                                <input className="form-control form-control-sm" id="lugar" required type="text" {...register("lugar")} />
+                                <input className="form-control form-control-sm"  required type="text" {...register("pregunta3")} />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="colorFavorito">Color favorito</label>
-                                <input className="form-control form-control-sm" id="color" required type="text" {...register("color")} />
+                                <input className="form-control form-control-sm" required type="text" {...register("pregunta4")} />
                             </div>
+
+
+
                             <div className="form-group">
                                 <label htmlFor="contraseña">Contraseña*</label>
-                                <input className="form-control form-control-sm" id="contrasena" required type="password" {...register("contrasena")} />
+                                <input className="form-control form-control-sm"  required type="password" {...register("contrasena")} />
 
                             </div>
                             <div className="form-group">
                                 <label htmlFor="confirmarContraseña">Confirmar contraseña*</label>
-                                <input className="form-control form-control-sm" id="confiContrasena" required type="password" {...register("confiContrasena")} />
+                                <input className="form-control form-control-sm" required type="password" {...register("confiContrasena")} />
                             </div>
                             <div className="row row-cols-1">
                                 <div className="input-group  col ">

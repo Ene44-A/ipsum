@@ -48,8 +48,8 @@ const Center = () => {
                     {
                         user ? <ContainerDashboard user={user} /> : <ContainerLogin />
                     } />
-                    {/* <Route path="/usuarios/:id" element={<DetalleUsuario />} /> */}
-                    <Route path="/usuarios/:id" element={<DashboardAdmin />} />
+                    <Route path="/usuarios/:id" element={<DetalleUsuario />} />
+                    <Route path="/" element={<DashboardAdmin />} />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

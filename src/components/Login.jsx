@@ -44,9 +44,11 @@ const Login = () => {
                                 <label htmlFor="password">Contraseña *</label>
                                 <input id="contrasena" className="form-control" type="password" {...register("contrasena")} />
                             </div>
-                            <button className='btn btn-primary' type="submit">Iniciar sesión</button>
+                            <div className="d-flex">
+                                <button className='color-text mt-4'style={{color:"white"}} type="submit">Iniciar sesión</button>
+                                <a className='color-text mt-4  mx-4 'style={{cursor: "pointer"}} onClick={()=>{handleLoginAndRegister()}}>Registrar </a>
+                            </div>
                             </form>
-                            <button  onClick={()=>{handleLoginAndRegister()}}>Registrar </button>
                         </div>
                         </div>
                     </div>
