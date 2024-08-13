@@ -1,9 +1,8 @@
 
   button {
     display: block;
-    width: 50%;
-    padding: 10px;
-    background-color: #4CAF50;
+    padding: 5px 20px;
+    background-color: #9D2B86;
     color: white;
     border: none;
     border-radius: 4px;
@@ -11,7 +10,7 @@
 }
 
   button:hover {
-    background-color: #45a049;
+    background-color: #b1429b;
   }
   .container-inputs {
       display: grid;
@@ -103,14 +102,45 @@
     opacity: 0;
   }
 
+.color-text{
+    color: #9D2B86;
+}
+
+.circle-container{
+
+    position: relative;
+}
+.circle{
+    width: 100px;
+    height: 100px;
+    border:5px solid #F39400;
+    border-radius: 50%;
+    position: absolute;
+    right: 42%;
+    top: 10px;
+}
+
+.cont-text{
+    background-color: #fff;
+    position: relative;
+}
 
 
-
-
-
-
-
-
+@media (max-width: 1230px) {
+    .circle{
+        right: 40%;
+    }
+}
+@media (max-width: 1000px) {
+    .circle{
+        right: 38%;
+    }
+}
+@media (max-width: 850px) {
+    .circle{
+        right: 36%;
+    }
+}
 
 
 @media (max-width: 768px) {
@@ -132,5 +162,22 @@
     .form-container {
         width: 100%; /* Ocupa el 100% del ancho */
     }
+    .circle{
+        right: 85%;
+        top: 710px;
+    }
+    .cont-text{
+        background-color: #fff;
+        position: relative;
+    }
 }
-
+@media (max-width: 664px) {
+    .circle{
+        right: 84%;
+    }
+}
+@media (max-width: 581px) {
+    .circle{
+        right: 80%;
+    }
+}

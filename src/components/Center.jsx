@@ -5,6 +5,9 @@ import { auth, db } from '../firebase/config';
 import { AuthProvider } from "../context/AuthContext";
 import { doc, getDoc } from 'firebase/firestore';
 import ContainerDashboard from '../screens/ContainerDashboard';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import DetalleUsuario from './DetalleUsuario';
+import DashboardAdmin from './DashboardAdmin';
 
 const Center = () => {
 
@@ -24,7 +27,7 @@ const Center = () => {
                 rol: rol,
             };
             setUser(userData);
-            console.log('User Data final ', userData);
+            // console.log('User Data final ', userData);
         });
     }
     onAuthStateChanged(auth, (usuarioFirebase)=>{
@@ -39,10 +42,16 @@ const Center = () => {
 
     return (
         <AuthProvider>
-
-            {
-                user ? <ContainerDashboard user={user} /> : <ContainerLogin />
-            }
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element=
+                    {
+                        user ? <ContainerDashboard user={user} /> : <ContainerLogin />
+                    } />
+                    {/* <Route path="/usuarios/:id" element={<DetalleUsuario />} /> */}
+                    <Route path="/usuarios/:id" element={<DashboardAdmin />} />
+                </Routes>
+            </BrowserRouter>
         </AuthProvider>
     );
 }

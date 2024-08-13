@@ -8,8 +8,6 @@ const ContainerDashboard = ({ user }) => {
     return (
         <div>
             <NavBar />
-
-            Dashboard
             {
                 user.rol == "admin" ? <DashboardAdmin /> : <DashboardUser />
             }

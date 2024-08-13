@@ -19,7 +19,7 @@ const ContainerLogin = () => {
 
     return (
         <div>
-            <h1>Container Login and Register</h1>
+            {/* <h1>Container Login and Register</h1> */}
             {
                 isRegister ? <Register /> : <Login />
             }
