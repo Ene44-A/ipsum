@@ -1,27 +1,28 @@
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useState} from "react";
+import { authContext } from "../context/AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 const NavDashboardAdmin = () => {
-  const [askColl, setAskColl] = useState([]);
+  
+  const {askColl} = useContext(authContext)
+  const [cuestion, setCuestion] = useState();
 
-  const askRef = collection(db, "preguntas");
+  const handleSave = async (id, event) => {
+    event.preventDefault();
+    console.log('Submit',cuestion, id);
+  try {
+    const askRef = doc(db, "preguntas", id)
+    await updateDoc(askRef,{
+      ask: cuestion
+    })
+    setCuestion('');
+  } catch (error) {
+    console.log(error);
+  }
 
-  useEffect(() => {
-    getDocs(askRef).then((e) => {
-      setAskColl(
-        e.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        })
-      );
-    });
-  }, []);
-
-  const handleSave = (id, event) => {
-    event.preventDefault(); // Prevent the default form submission
-    console.log(id); // This will log the ID of the item that was clicked
-    // Add your save logic here
   };
+  console.log(cuestion);
 
   return (
     <div>
@@ -36,9 +37,9 @@ const NavDashboardAdmin = () => {
               return (
                 <li className="p-4 nav-item row" key={e.id}>
                   <form onSubmit={(event) => handleSave(e.id, event)}>
-                    <label htmlFor="">{e.ask}</label>
+                    <label htmlFor="">{e.ask }</label>
                     <div className="d-flex">
-                      <input type="text" />
+                      <input type="text" onChange={(event) => setCuestion(event.target.value)} />
                       <button type="submit" className="">X</button>
                     </div>
                   </form>

@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext,  useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { createContext, useContext,  useEffect,  useState } from "react";
+import { db } from "../firebase/config";
 // import { auth } from "../firebase/config";
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -31,10 +33,27 @@ export function AuthProvider({children}){
   const handleViewUser = () =>{
     setViewUser(!viewUser)
   }
-  // const handle
+
+  const [askColl, setAskColl] = useState([]);
+  // const [cuestion, setCuestion] = useState([]);
+
+  const askRef = collection(db, "preguntas");
+
+  useEffect(() => {
+    getDocs(askRef).then((e) => {
+      setAskColl(
+        e.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        })
+      );
+    });
+  }, []);
+
+
+
 
     return (
-        <authContext.Provider value={{isRegister, handleLoginAndRegister, viewUser, handleViewUser}}>
+        <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser}}>
           {children}
         </authContext.Provider>
       );
