@@ -7,22 +7,33 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-Nombre del proyecto
-Descripción
+# Ipsum prueba
+#### Descripción:
 Este proyecto es un sistema de autenticación y registro de usuarios que incluye una pantalla de administrador y una pantalla de usuario. El sistema permite a los usuarios registrarse y conectarse utilizando su cuenta de Google. Además, los administradores pueden editar las preguntas que se muestran en el formulario de registro.
 
-Características
-Registro y login de usuarios
-Conexión con Google
-Pantalla de administrador para editar preguntas del formulario de registro
-Pantalla de usuario para visualizar información de perfil
-Tecnologías utilizadas
-Node.js
-Express
-MongoDB
-React
+#### Características
+- Registro y login de usuarios.
+- Conexión con Google.
+- Pantalla de administrador para editar preguntas del formulario de registro.
+- Pantalla de usuario para visualizar información de perfil.
+
+
+#### Tecnologías utilizadas
+
+- React
+  - [react-router-dom](https://reactrouter.com/en/main)
+  - [react-hook-form](https://react-hook-form.com/)
+- [Vite](https://vitejs.dev/)
+- [FireBase](https://firebase.google.com/?hl=es)
+  - Authentication
+    - Correo
+    - Google
+    - Facebook
+  - Cloud Firestore
+  - Storage
+
 [Add other technologies used in your project]
-Instalación
+#### Instalación
 Clona el repositorio: git clone https://github.com/tu-usuario/tu-proyecto.git
 Instala las dependencias: npm install o yarn install
 Configura las variables de entorno: [explica cómo configurar las variables de entorno, por ejemplo: crear un archivo .env con las credenciales de Google]
