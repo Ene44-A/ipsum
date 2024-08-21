@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { collection, getDocs } from "firebase/firestore";
 import { createContext, useContext,  useEffect,  useState } from "react";
-import { db } from "../firebase/config";
+import { auth, db } from "../firebase/config";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 // import { auth } from "../firebase/config";
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -24,18 +25,12 @@ export function AuthProvider({children}){
 
   const handleLoginAndRegister = () => {
     setIsRegister(!isRegister)
-    if(isRegister){
-      console.log('registrar ');
-    }else{
-      console.log('login');
-    }
   }
   const handleViewUser = () =>{
     setViewUser(!viewUser)
   }
 
   const [askColl, setAskColl] = useState([]);
-  // const [cuestion, setCuestion] = useState([]);
 
   const askRef = collection(db, "preguntas");
 
@@ -49,11 +44,17 @@ export function AuthProvider({children}){
     });
   }, []);
 
+  const loginWithGoogle = async () => {
+    const responseGoogle = new GoogleAuthProvider();
+    console.log(responseGoogle);
+    return await signInWithPopup(auth, responseGoogle);
+
+  };
 
 
 
     return (
-        <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser}}>
+        <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser, loginWithGoogle}}>
           {children}
         </authContext.Provider>
       );

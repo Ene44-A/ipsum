@@ -12,7 +12,7 @@ const ContainerLogin = () => {
 
     const {isRegister} = useContext(authContext)
 
-    console.log('is registre ', isRegister);
+    // console.log('is registre ', isRegister);
 
 
 

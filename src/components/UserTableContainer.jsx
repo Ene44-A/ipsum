@@ -10,10 +10,7 @@ const UserTableContainer = () => {
     const [userInfo, setUserInfo] = useState([]);
     const {handleViewUser} = useContext(authContext)
 
-
-
     const userRef = collection(db, "usuarios")
-
 
     useEffect(() => {
         getDocs(userRef).then((e)=>{

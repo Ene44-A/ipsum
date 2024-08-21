@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 const NavDashboardAdmin = () => {
-  
+
   const {askColl} = useContext(authContext)
   const [cuestion, setCuestion] = useState();
 
@@ -22,7 +22,7 @@ const NavDashboardAdmin = () => {
   }
 
   };
-  console.log(cuestion);
+  // console.log(cuestion);
 
   return (
     <div>
@@ -37,7 +37,7 @@ const NavDashboardAdmin = () => {
               return (
                 <li className="p-4 nav-item row" key={e.id}>
                   <form onSubmit={(event) => handleSave(e.id, event)}>
-                    <label htmlFor="">{e.ask }</label>
+                    <label htmlFor="">{e.ask}</label>
                     <div className="d-flex">
                       <input type="text" onChange={(event) => setCuestion(event.target.value)} />
                       <button type="submit" className="">X</button>

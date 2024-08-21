@@ -36,11 +36,11 @@ const Login = () => {
                         <div>
                             <h2>Regístrate a WePlot</h2>
                             <form action="" onSubmit={handleSubmit(login)}>
-                            <div className="form-group">
+                            <div className="form-group my-2">
                                 <label htmlFor="email">Email *</label>
                                 <input id="email" className="form-control" type="email" {...register("email")} />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group my-2">
                                 <label htmlFor="password">Contraseña *</label>
                                 <input id="contrasena" className="form-control" type="password" {...register("contrasena")} />
                             </div>

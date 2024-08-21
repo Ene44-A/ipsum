@@ -40,6 +40,13 @@ const Center = () => {
         }
     });
 
+    console.log('usuario actual: ',user);
+
+
+
+
+
+
     return (
         <AuthProvider>
             <BrowserRouter>

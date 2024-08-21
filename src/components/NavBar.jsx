@@ -36,7 +36,7 @@ const NavBar = () => {
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         </ul>
                         <form className="d-flex" role="search">
-                            <button onClick={()=>{handleLogout()}}>Cerrar Sesión</button>
+                            <button onClick={()=>{handleLogout()}}> <Link to="/" style={{color:"white"}}>Cerrar Sesión</Link></button>
                         </form>
                     </div>
                 </div>
