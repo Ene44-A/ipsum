@@ -6,9 +6,12 @@ import { auth, db } from '../firebase/config';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { authContext } from "../context/AuthContext";
+import {ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {storage} from '../firebase/config';
 
 const Register = () => {
 
+    let urlImg;
     const [user, setUser] = useState(null);
     //verifica el usuario y lo toma como un objeto
     useEffect(() => {
@@ -42,7 +45,7 @@ const Register = () => {
     }
 
     //      REGISTRO DE USUAIROS DEFAULT Y ASIGNACIÓN DE INFORMACIÓN DEL PERFIL
-    async function registrarUsuario(rol,nombre,apellido,email,telefono,pais,pregunta1,pregunta2,pregunta3,pregunta4,contrasena){
+    async function registrarUsuario(rol,urlImg,nombre,apellido,email,telefono,pais,pregunta1,pregunta2,pregunta3,pregunta4,contrasena){
         const infoUsuario = await createUserWithEmailAndPassword(auth, email, contrasena).then((usuarioFirebase) =>{
             return usuarioFirebase
         })
@@ -50,6 +53,7 @@ const Register = () => {
         const docRef = await doc(db, `usuarios/${infoUsuario.user.uid}`);
         setDoc(docRef,{
             rol: rol,
+            avatar: urlImg,
             nombre:nombre,
             apellido:apellido,
             correo: email,
@@ -68,6 +72,7 @@ const Register = () => {
                 ask:ask4,
                 resp:pregunta4
             },
+            registerInfo: false
         });
     }
     //      REGISTRAR DATOS CON FORMULARIO
@@ -77,6 +82,7 @@ const Register = () => {
         if(isRegister){
                 registrarUsuario(
                     rol,
+                    urlImg,
                     data.nombre,
                     data.apellido,
                     data.email,
@@ -91,18 +97,29 @@ const Register = () => {
         // }
         }
     }
+    const fileHandle = async (e) =>{
+        const archivoDic = e.target.files[0];
+        const refArchivo = ref(storage,`avatar/${archivoDic.name}`)
+        await uploadBytes(refArchivo, archivoDic)
+        urlImg = await getDownloadURL(refArchivo)
+        console.log(urlImg);
+        
+    }
 
     //      QUEMAR DATOS CON USUARIOS REGISTRADOS CON GOOGLE
     const registerGoogleData = async (user) => {
         try {
             const userData = {
                 rol: 'usuario',
+                avatar: user.photoURL,
                 correo: user.email,
                 nombre: user.displayName,
                 registerInfo: true
             }
             const docRefG = await doc(db, `usuarios`, user.uid);
             setDoc(docRefG, userData)
+            console.log(user);
+            
         } catch (error) {
             console.error("Error during Google login or Firestore operation:", error);
         }
@@ -204,7 +221,7 @@ const Register = () => {
                                                 <p style={{fontSize:"10px", color:"grey" }}>JPG o PNG de maximo 10MB</p>
                                             </h5>
                                         </div>
-                                        <input type="file" name="myfile" />
+                                        <input type="file" required name="myfile" onChange={fileHandle} />
                                     </div>
                                 </div>
                             </div>

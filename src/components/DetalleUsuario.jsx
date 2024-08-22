@@ -23,26 +23,29 @@ const DetalleUsuario = () => {
   return (
     <div className="container-fluid">
       <NavBar />
-      <div className="row">
-        <nav className="col-md-3 d-none d-md-block bg-light sidebar">
-          <ul>
-            <li>si</li>
-            <li>si</li>
-            <li>si</li>
-          </ul>
-        </nav>
-        <main className="col-md-9 ml-sm-auto px-4">
-          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 className="h2">Detalles del usuario {user && user.nombre}</h1>
-          </div>
+        {
+          user &&
           <div className="row">
-            {
-              user &&
+            <nav className="col-md-3 d-none d-md-block bg-light sidebar">
+                <div className="d-flex m-2 justify-content-center align-items-center">
+                    <div className="rounded-circle" style={{border:"8px solid #B1429B   "}}>
+                        <img src={user.avatar} alt="User Avatar" className="img-fluid rounded-circle" style={{ width: '180px', height: '180px' }} />
+                    </div>
+                </div>
+                <div className="m-4 d-flex justify-content-center">
+                    <h4 style={{color:'grey'}}>{user.nombre+' '+user.apellido}</h4>
+                </div>
+            </nav>
+            <main className="col-md-9 ml-sm-auto px-4">
+              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 className="h2">Detalles del usuario {user && user.nombre}</h1>
+              </div>
+              <div className="row">
               <Usuario user={user} />
-            }
           </div>
         </main>
       </div>
+      }
     </div>
   );
 };

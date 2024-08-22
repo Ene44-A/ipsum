@@ -25,6 +25,7 @@ const Center = () => {
                 uid: usuarioFirebase.uid,
                 email: usuarioFirebase.email,
                 rol: rol,
+                avatar:usuarioFirebase.avatar
             };
             setUser(userData);
             // console.log('User Data final ', userData);

@@ -36,8 +36,8 @@ const Usuario = ({user}) => {
 
   return (
     <div className="container">
+            
        <div className="card">
-            <img src="..." className="card-img-top" alt="..."/>
             <div className="card-body">
                 <div className="d-flex justify-content-between">
                     <h4 style={{color:'grey'}}>{user.nombre+' '+user.apellido}</h4>
