@@ -1,6 +1,6 @@
 import '../App.css';
 import img from '../assets/image.png'
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth, db } from '../firebase/config';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -8,29 +8,36 @@ import { doc, setDoc } from "firebase/firestore";
 import { authContext } from "../context/AuthContext";
 import {ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage} from '../firebase/config';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
 
-    let urlImg;
-    const [user, setUser] = useState(null);
+    //      REGISTRO DE DATOS DEL FORMULARIO
+    const {register, handleSubmit} = useForm();
+    //      VARIABLES GLOBALES
+    const {isRegister, handleLoginAndRegister, askColl, loginWithGoogle} = useContext(authContext)
+
+    const captcha = useRef(null)
+    const [urlImg, setUrlImg] = useState(null);
+    const [capchaState, setCapchaState] = useState(null);
+    const [fileSave, setFileSave] = useState(null);
+    const [equalPass, setEqualPass] = useState(null);
+    const [rol, setRol] = useState('usuario');
+    const [userGoogle, setUserGoogle] = useState(false);
+
     //verifica el usuario y lo toma como un objeto
     useEffect(() => {
         onAuthStateChanged(auth, (userNow) => {
-        setUser(userNow);
+        console.log(userNow);
         });
     }, []);
-     //      REGISTRO DE DATOS DEL FORMULARIO
-     const [rol, setRol] = useState('usuario');
-     const {register, handleSubmit} = useForm();
 
-    //      VARIABLES GLOBALES
-    const {isRegister, handleLoginAndRegister, askColl, loginWithGoogle} = useContext(authContext)
-    //      DESESTRUCTURIN DE PREGUNTAS
+     //      DESESTRUCTURIN DE PREGUNTAS
     let ask1, ask2, ask3, ask4;
     for (let i = 0; i < askColl.length; i++) {
         switch (i) {
             case 0:
-            ask1 = askColl[i].ask;
+                ask1 = askColl[i].ask;
             break;
             case 1:
             ask2 = askColl[i].ask;
@@ -45,7 +52,7 @@ const Register = () => {
     }
 
     //      REGISTRO DE USUAIROS DEFAULT Y ASIGNACIÓN DE INFORMACIÓN DEL PERFIL
-    async function registrarUsuario(rol,urlImg,nombre,apellido,email,telefono,pais,pregunta1,pregunta2,pregunta3,pregunta4,contrasena){
+    async function registrarUsuario(rol, urlImg,userGoogle, nombre,apellido,email,telefono,pais,pregunta1,pregunta2,pregunta3,pregunta4,contrasena){
         const infoUsuario = await createUserWithEmailAndPassword(auth, email, contrasena).then((usuarioFirebase) =>{
             return usuarioFirebase
         })
@@ -54,6 +61,7 @@ const Register = () => {
         setDoc(docRef,{
             rol: rol,
             avatar: urlImg,
+            userGoogle: userGoogle,
             nombre:nombre,
             apellido:apellido,
             correo: email,
@@ -71,39 +79,64 @@ const Register = () => {
             },pregunta4:{
                 ask:ask4,
                 resp:pregunta4
-            },
-            registerInfo: false
+            }
         });
+    }
+    const fileHandle = async (e) =>{
+        try {
+            const archivoDic = e.target.files[0];
+            const refArchivo = ref(storage,`avatar/${archivoDic.name}`)
+            await uploadBytes(refArchivo, archivoDic)
+            const urlImgInfo = await getDownloadURL(refArchivo)
+            setUrlImg(urlImgInfo)
+            setFileSave(true)
+            console.log(urlImgInfo);
+        } catch (error) {
+            alert('Error al guardar archivo: '+error)
+            setFileSave(false)
+
+        }
     }
     //      REGISTRAR DATOS CON FORMULARIO
     const registrar = async (data) => {
         console.log('registrado ', data.email, data.contrasena);
-
         if(isRegister){
-                registrarUsuario(
-                    rol,
-                    urlImg,
-                    data.nombre,
-                    data.apellido,
-                    data.email,
-                    data.telefono,
-                    data.pais,
-                    data.pregunta1,
-                    data.pregunta2,
-                    data.pregunta3,
-                    data.pregunta4,
-                    data.contrasena,
-            )
-        // }
+            if(captcha.current.getValue()){
+                setCapchaState(true)
+                if(data.contrasena === data.confiContrasena){
+                    setEqualPass(true)
+                    if(fileSave === true){
+                        if (urlImg) {
+                            registrarUsuario(
+                              rol,
+                              urlImg,
+                              userGoogle,
+                              data.nombre,
+                              data.apellido,
+                              data.email,
+                              data.telefono,
+                              data.pais,
+                              data.pregunta1,
+                              data.pregunta2,
+                              data.pregunta3,
+                              data.pregunta4,
+                              data.contrasena
+                            );
+                        } else {
+                            console.error("La URL de la imagen no está definida.");
+                            // Maneja el caso donde urlImg no esté disponible
+                            // Puedes asignar una imagen predeterminada o mostrar un error
+                        }
+                    }else{
+                        setFileSave(false)
+                    }
+                }else{
+                    setEqualPass(false)
+                }
+            }else{
+                setCapchaState(false)
+            }
         }
-    }
-    const fileHandle = async (e) =>{
-        const archivoDic = e.target.files[0];
-        const refArchivo = ref(storage,`avatar/${archivoDic.name}`)
-        await uploadBytes(refArchivo, archivoDic)
-        urlImg = await getDownloadURL(refArchivo)
-        console.log(urlImg);
-        
     }
 
     //      QUEMAR DATOS CON USUARIOS REGISTRADOS CON GOOGLE
@@ -114,12 +147,11 @@ const Register = () => {
                 avatar: user.photoURL,
                 correo: user.email,
                 nombre: user.displayName,
-                registerInfo: true
+                userGoogle: userGoogle
             }
             const docRefG = await doc(db, `usuarios`, user.uid);
             setDoc(docRefG, userData)
             console.log(user);
-            
         } catch (error) {
             console.error("Error during Google login or Firestore operation:", error);
         }
@@ -130,6 +162,7 @@ const Register = () => {
         loginWithGoogle()
         onAuthStateChanged(auth, (userGg) => {
         registerGoogleData(userGg)
+        setUserGoogle(true)
         })
     }
 
@@ -163,6 +196,12 @@ const Register = () => {
                     </div>
                     <form className='px-4' action="" onSubmit={handleSubmit(registrar,askColl)}>
                     <div className="text-center p-2 text-secondary"><p>O diligencia el formulario</p></div>
+                        {
+                            equalPass === false &&
+                            <div className="alert alert-danger mt-2" role="alert">
+                                <strong>Error:</strong> Las contraseñas no coinciden. Por favor, verifique y vuelva a intentarlo.
+                            </div>
+                        }
                         <div className="row row-cols-2">
                             <div className="form-group col">
                                 <label htmlFor="nombre">Nombre*</label>
@@ -226,12 +265,32 @@ const Register = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className=""></div>
+                        {
+                            fileSave === true &&
+                            <div className="alert alert-success mt-2" role="alert">
+                                <strong>Éxito:</strong> La foto de perfil se guardó correctamente.
+                            </div>
+                        }{
+                            fileSave === false &&
+                            <div className="alert  alert-danger mt-2" role="alert">
+                                <strong>Información:</strong> Por favor, seleccione un archivo para la foto de perfil.
+                            </div>
+                        }
+                        <div className="mt-4">
+                            <ReCAPTCHA ref={captcha} sitekey='6LdGfy4qAAAAAPTL8uCFemwyoC247ZQbvJWd_Ocm'/>
+                        </div>
+                        {
+                            capchaState === false &&
+                            <div className="alert alert-danger mt-2" role="alert">
+                               <strong>Advertencia:</strong> Por favor, complete el reCAPTCHA para continuar.
+                            </div>
+                        }
                         <div className="form-group mt-4">
                             <button type="submit" className="">Unirme a WePlot</button>
                             <p className="text mt-3">¿Ya tienes cuenta? <a className='color-text' onClick={()=>{handleLoginAndRegister()}} href="#">Inicia sesión aquí</a></p>
                         </div>
                     </form>
-                    {/* <button >Iniciar Sesión</button> */}
                 </div>
             </div>
         </div>

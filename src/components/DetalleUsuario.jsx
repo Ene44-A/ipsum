@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import Usuario from "./Usuario";
+import Usuario from "../logic/Usuario";
 import NavBar from "./NavBar";
 import { db } from "../fireBase/config";
 

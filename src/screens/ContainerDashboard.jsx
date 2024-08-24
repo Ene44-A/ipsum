@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import DashboardAdmin from "../components/DashboardAdmin";
-import DashboardUser from "../components/DashboardUser";
+import DashboardAdmin from "./DashboardAdmin";
+import DashboardUser from "./DashboardUser";
 import NavBar from "../components/NavBar";
 
 

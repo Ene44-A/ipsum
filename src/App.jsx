@@ -1,4 +1,4 @@
-import Center from './components/Center'
+import Center from './logic/Center'
 
 function App() {
 

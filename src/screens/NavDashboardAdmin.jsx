@@ -11,16 +11,15 @@ const NavDashboardAdmin = () => {
   const handleSave = async (id, event) => {
     event.preventDefault();
     console.log('Submit',cuestion, id);
-  try {
-    const askRef = doc(db, "preguntas", id)
-    await updateDoc(askRef,{
-      ask: cuestion
-    })
-    setCuestion('');
-  } catch (error) {
-    console.log(error);
-  }
-
+      try {
+        const askRef = doc(db, "preguntas", id)
+        await updateDoc(askRef,{
+          ask: cuestion
+        })
+        setCuestion('');
+      } catch (error) {
+        console.log(error);
+      }
   };
   // console.log(cuestion);
 
@@ -33,13 +32,13 @@ const NavDashboardAdmin = () => {
             Editar Preguntas <span className="sr-only">(Nuevas)</span>
           </li>
           {askColl &&
-            askColl.map((e) => {
+            askColl.map((e, indice) => {
               return (
                 <li className="p-4 nav-item row" key={e.id}>
                   <form onSubmit={(event) => handleSave(e.id, event)}>
-                    <label htmlFor="">{e.ask}</label>
+                    <label htmlFor="">Pregunta {indice + 1}</label>
                     <div className="d-flex">
-                      <input type="text" onChange={(event) => setCuestion(event.target.value)} />
+                      <input type="text" placeholder={e.ask} onChange={(event) => setCuestion(event.target.value)} />
                       <button type="submit" className="">X</button>
                     </div>
                   </form>

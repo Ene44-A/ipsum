@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import CuestionPopUpUser from "./cuestionPopUpUser";
+import CuestionPopUpUser from "../components/cuestionPopUpUser";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import PreguntasUserItem from "./PreguntasUserItem";
+import PreguntasUserItem from "../components/PreguntasUserItem";
 
 
 const DashboardUser = (user) => {
 
     const [userInfo, setUserInfo] = useState()
     const [isPopUp, setIsPopUp] = useState()
-
+ 
     const handlePopUp = () => {
         setIsPopUp()
         console.log('funcion que cambia');

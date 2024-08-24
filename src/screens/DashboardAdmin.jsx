@@ -1,5 +1,5 @@
 import NavDashboardAdmin from "./NavDashboardAdmin";
-import UserTableContainer from "./UserTableContainer";
+import UserTableContainer from "../components/UserTableContainer";
 // import DetalleUsuario from "./DetalleUsuario";
 
 

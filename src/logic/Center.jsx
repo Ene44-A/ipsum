@@ -6,8 +6,8 @@ import { AuthProvider } from "../context/AuthContext";
 import { doc, getDoc } from 'firebase/firestore';
 import ContainerDashboard from '../screens/ContainerDashboard';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import DetalleUsuario from './DetalleUsuario';
-import DashboardAdmin from './DashboardAdmin';
+import DetalleUsuario from '../components/DetalleUsuario';
+import DashboardAdmin from '../screens/DashboardAdmin';
 
 const Center = () => {
 
