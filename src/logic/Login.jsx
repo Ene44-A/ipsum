@@ -5,11 +5,9 @@ import { useForm } from "react-hook-form";
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { authContext } from "../context/AuthContext";
-// import { doc, setDoc } from "firebase/firestore";
 
 
 const Login = () => {
-
 
     const {isRegister, handleLoginAndRegister, loginWithGoogle} = useContext(authContext)
 

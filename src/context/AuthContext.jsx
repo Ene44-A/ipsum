@@ -22,18 +22,10 @@ export function AuthProvider({children}){
 
   const [isRegister, setIsRegister] = useState(true);
   const [viewUser, setViewUser] = useState(true);
-
-  const handleLoginAndRegister = () => {
-    setIsRegister(!isRegister)
-  }
-  const handleViewUser = () =>{
-    setViewUser(!viewUser)
-  }
-
   const [askColl, setAskColl] = useState([]);
 
   const askRef = collection(db, "preguntas");
-
+  
   useEffect(() => {
     getDocs(askRef).then((e) => {
       setAskColl(
@@ -44,14 +36,19 @@ export function AuthProvider({children}){
     });
   }, []);
 
+  const handleLoginAndRegister = () => {
+    setIsRegister(!isRegister)
+  }
+
+  const handleViewUser = () =>{
+    setViewUser(!viewUser)
+  }
+
   const loginWithGoogle = async () => {
     const responseGoogle = new GoogleAuthProvider();
     console.log(responseGoogle);
     return await signInWithPopup(auth, responseGoogle);
-
   };
-
-
 
     return (
         <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser, loginWithGoogle}}>

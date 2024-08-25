@@ -38,7 +38,7 @@ const CuestionPopUpUser = ({user, handlePopUp}) => {
     const docRef = await doc(db, 'usuarios', user);
     updateDoc(docRef,
       {
-        registerInfo: false,
+        userGoogle: false,
         telefono:telefono,
         pais:pais,
         pregunta1:{

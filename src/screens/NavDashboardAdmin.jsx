@@ -16,7 +16,7 @@ const NavDashboardAdmin = () => {
         await updateDoc(askRef,{
           ask: cuestion
         })
-        setCuestion('');
+        await setCuestion('');
       } catch (error) {
         console.log(error);
       }

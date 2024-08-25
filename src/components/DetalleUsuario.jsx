@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import Usuario from "../logic/Usuario";
 import NavBar from "./NavBar";
-import { db } from "../fireBase/config";
+import { db } from "../firebase/config";
 
 const DetalleUsuario = () => {
   const [user, setUser] = useState(null);

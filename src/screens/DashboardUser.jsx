@@ -9,21 +9,23 @@ const DashboardUser = (user) => {
 
     const [userInfo, setUserInfo] = useState()
     const [isPopUp, setIsPopUp] = useState()
+    const [submitInfo, setSubmitInfo] = useState(false)
  
     const handlePopUp = () => {
         setIsPopUp()
         console.log('funcion que cambia');
+        setSubmitInfo(true)
 
     }
     useEffect(() => {
         const docRef = doc(db, "usuarios", user.user.uid);
         getDoc(docRef).then((resp) => {
             setUserInfo({ ...resp.data(), id: resp.id });
-            setIsPopUp(userInfo.registerInfo);
+            setIsPopUp(resp.data().userGoogle);
         })
-        }, []);
+    }, [submitInfo]);
+    console.log(isPopUp);
 
-        console.log('Dashboaruser Is PopUp: '+isPopUp);
 
     return (
         <>
@@ -44,7 +46,6 @@ const DashboardUser = (user) => {
                                             <h3 className="mt-3">{userInfo.nombre}</h3>
                                             <h3 className="text-muted">{userInfo.apellido}</h3>
                                         </div>
-                                        {/* <button className="btn btn-primary">Edit Profile</button> */}
                                     </div>
                                 </div>
                                 <div className="card  mb-4">
@@ -67,8 +68,8 @@ const DashboardUser = (user) => {
                                 </div>
                                 <div className="card">
                                 {
-                                isPopUp &&
-                                    <CuestionPopUpUser user={user.user.uid} registerInfo={userInfo.registerInfo} handlePopUp={handlePopUp} />
+                                    isPopUp === true &&
+                                    <CuestionPopUpUser user={user.user.uid} registerInfo={userInfo.userGoogle} handlePopUp={handlePopUp} />
                                 }
                                 </div>
                             </div>
