@@ -1,10 +1,11 @@
 import '../App.css';
 import img from '../assets/image.png'
+import logo from '../assets/logo.png'
 import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth, db } from '../firebase/config';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { authContext } from "../context/AuthContext";
 import {ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage} from '../firebase/config';
@@ -17,13 +18,13 @@ const Register = () => {
     //      VARIABLES GLOBALES
     const {isRegister, handleLoginAndRegister, askColl, loginWithGoogle} = useContext(authContext)
 
-    const captcha = useRef(null)
+    const captcha = useRef(null);
     const [urlImg, setUrlImg] = useState(null);
     const [capchaState, setCapchaState] = useState(null);
     const [fileSave, setFileSave] = useState(null);
     const [equalPass, setEqualPass] = useState(null);
-    const [rol, setRol] = useState('usuario');
-    const [userGoogle, setUserGoogle] = useState(false);
+    const [rol] = useState('usuario');
+    const [userGoogle] = useState(false);
 
     //verifica el usuario y lo toma como un objeto
     useEffect(() => {
@@ -50,7 +51,6 @@ const Register = () => {
             break;
         }
     }
-
     //      REGISTRO DE USUAIROS DEFAULT Y ASIGNACIÓN DE INFORMACIÓN DEL PERFIL
     async function registrarUsuario(rol, urlImg,userGoogle, nombre,apellido,email,telefono,pais,pregunta1,pregunta2,pregunta3,pregunta4,contrasena){
         const infoUsuario = await createUserWithEmailAndPassword(auth, email, contrasena).then((usuarioFirebase) =>{
@@ -82,6 +82,7 @@ const Register = () => {
             }
         });
     }
+    //      MANEJO DE ESTADOS EN CARGA DE FOTO DE AVATAR
     const fileHandle = async (e) =>{
         try {
             const archivoDic = e.target.files[0];
@@ -94,11 +95,13 @@ const Register = () => {
         } catch (error) {
             alert('Error al guardar archivo: '+error)
             setFileSave(false)
-
         }
     }
+
     //      REGISTRAR DATOS CON FORMULARIO
     const registrar = async (data) => {
+
+
         console.log('registrado ', data.email, data.contrasena);
         if(isRegister){
             if(captcha.current.getValue()){
@@ -137,11 +140,12 @@ const Register = () => {
         }
     }
 
+    //      REGISTRAR DATOS DESDE GOOGLE
     const registerGoogleData = async (user) => {
         try {
             const docRefG = doc(db, `usuarios`, user.uid);
             const docSnap = await getDoc(docRefG);
-    
+
             if (docSnap.exists()) {
                 console.log("El usuario ya existe, no se actualizarán los datos.");
                 // No hacer nada, el usuario ya está registrado
@@ -160,14 +164,13 @@ const Register = () => {
             console.error("Error durante el inicio de sesión con Google o la operación en Firestore:", error);
         }
     }
-    
+    //      REGISTRO DE GOOGLE
     const RegisterGoogle = async () => {
         await loginWithGoogle();
         onAuthStateChanged(auth, async (userGg) => {
             if (userGg) {
                 const docRefG = doc(db, `usuarios`, userGg.uid);
                 const docSnap = await getDoc(docRefG);
-    
                 if (!docSnap.exists()) {
                     await registerGoogleData(userGg);
                 } else {
@@ -181,15 +184,16 @@ const Register = () => {
     return (
         <div className="container-fluid">
             <div className="row">
-                    <div className="circle-container">
-                        <div className="circle">.</div>
-                    </div>
+                {/* <div className="circle-container">
+                    <div className="circle">.</div>
+                </div> */}
                 <div className="col-md-6 d-flex align-items-center justify-content-center" style={{background: `linear-gradient(to bottom, #E2E2E2, #F0F0F0)` }}>
                     <img src={img} alt="Your Image" className="img-fluid" />
                 </div>
                 <div className="col-md-6 p-5">
                     <div className="cont-text">
-                        <h1 style={{fontFamily:"Geneva" }} className="text mb-4 fw-bold">Regístrate a <span className='color-text'>WePlot</span></h1>
+                        <img src={logo} alt="Your Image" className="m-b" width="500" height="120"/>
+                        {/* <h1 style={{fontFamily:"Geneva" }} className="text mb-4 fw-bold">Regístrate a <span className='color-text'>WePlot</span></h1> */}
                     </div>
                     <div className="container-fluid d-flex m-4">
                         <div className="google-boton col-md-5" >
@@ -236,46 +240,46 @@ const Register = () => {
                                 <input className="form-control form-control-sm"  required type="text" {...register("pais")} />
                             </div>
                         </div>
-                        <div className="row row-cols-2">
-                        {
-                            askColl&&
-                            askColl.map((e)=>{
-                                return(
-                                    <div className="form-group col" key={e.id}>
-                                        <label htmlFor={e.aks}>{e.ask}</label>
-                                        <input className="form-control form-control-sm"  required type="text" {...register(e.field)} />
-                                    </div>
-                                )
-                            })
-                        }
-                            <div className="form-group">
-                                <label htmlFor="contraseña">Contraseña*</label>
-                                <input className="form-control form-control-sm"  required type="password" {...register("contrasena")} />
+                            <div className="row row-cols-2">
+                                {
+                                    askColl&&
+                                    askColl.map((e)=>{
+                                        return(
+                                            <div className="form-group col" key={e.id}>
+                                                <label htmlFor={e.aks}>{e.ask}</label>
+                                                <input className="form-control form-control-sm"  required type="text" {...register(e.field)} />
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <div className="form-group">
+                                    <label htmlFor="contraseña">Contraseña*</label>
+                                    <input className="form-control form-control-sm"  required type="password" {...register("contrasena")} />
 
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="confirmarContraseña">Confirmar contraseña*</label>
-                                <input className="form-control form-control-sm" required type="password" {...register("confiContrasena")} />
-                            </div>
-                            <div className="row row-cols-1">
-                                <div className="input-group  col ">
-                                    <div className="upload-btn-wrapper d-flex pt-4">
-                                        <span className='item-profile p-4 me-3'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#9D2B86" className="bi bi-person-circle" viewBox="0 0 16 16">
-                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                                            </svg>
-                                        </span>
-                                        <div className="d-flex align-items-center justify-content-center">
-                                            <h5>Foto de perfil
-                                                <p style={{fontSize:"10px", color:"grey" }}>JPG o PNG de maximo 10MB</p>
-                                            </h5>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="confirmarContraseña">Confirmar contraseña*</label>
+                                    <input className="form-control form-control-sm" required type="password" {...register("confiContrasena")} />
+                                </div>
+                                <div className="row row-cols-1">
+                                    <div className="input-group  col ">
+                                        <div className="upload-btn-wrapper d-flex pt-4">
+                                            <span className='item-profile p-4 me-3'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#9D2B86" className="bi bi-person-circle" viewBox="0 0 16 16">
+                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                                    <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                                </svg>
+                                            </span>
+                                            <div className="d-flex align-items-center justify-content-center">
+                                                <h5>Foto de perfil
+                                                    <p style={{fontSize:"10px", color:"grey" }}>JPG o PNG de maximo 10MB</p>
+                                                </h5>
+                                            </div>
+                                            <input type="file" required name="myfile" onChange={fileHandle} />
                                         </div>
-                                        <input type="file" required name="myfile" onChange={fileHandle} />
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <div className=""></div>
                         {
                             fileSave === true &&
