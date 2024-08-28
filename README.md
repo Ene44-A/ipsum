@@ -32,22 +32,21 @@ Este proyecto es un sistema de autenticación y registro de usuarios que incluye
   - Cloud Firestore
   - Storage
 
-[Add other technologies used in your project]
-#### Instalación
-Clona el repositorio: git clone https://github.com/tu-usuario/tu-proyecto.git
-Instala las dependencias: npm install o yarn install
-Configura las variables de entorno: [explica cómo configurar las variables de entorno, por ejemplo: crear un archivo .env con las credenciales de Google]
-Inicia el servidor: npm start o yarn start
-Uso
-Registro
-Registra un nuevo usuario: ir a la ruta /register y completar el formulario
-Conexión con Google
-Conéctate con Google: ir a la ruta /login y seleccionar la opción de Google
-Edición de preguntas
-Edita preguntas del formulario de registro: ir a la ruta /admin y seleccionar la opción de editar preguntas
-Contribuciones
-Este proyecto es de código abierto y acepta contribuciones. Si deseas contribuir, por favor:
+## Caracteristicas
 
-Crea un fork del repositorio
-Realiza tus cambios y haz un commit
-Crea un pull request para que se revise tu contribución
+### Registro
+Registra un nuevo usuario: ir al registro y completar el formulario, subir la foto de avatar con el reCaptcha.
+
+### Inicio de sesión
+Iniciar sesión con un usuario: Ir al inicio de sesión y completar los campos de correo y contraseña.
+
+### Conexión con Google
+Conéctate con Google: ir a a registrar/Iniciar sesión y seleccionar la opción de Google
+
+### Edición de preguntas
+Edita preguntas del formulario de registro: ingresar como admin y seleccionar en el nadvar lateral editar preguntas para el usuario.
+
+### Contribuciones
+- Este proyecto es de código abierto y acepta contribuciones. Si deseas contribuir, por favor:
+
+
