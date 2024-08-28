@@ -21,7 +21,9 @@ const UserTableContainer = () => {
             )
         })
 
-    }, [userRef]);
+    }, []);
+
+    console.log(userInfo);
 
 
     return (
@@ -43,18 +45,21 @@ const UserTableContainer = () => {
                             return(
 
                                 <tr key={e.id.slice(0, 4)}>
-                                    <th scope="row">{e.id}</th>
+                                    <th scope="row">{e.id.slice(0, 5)}</th>
                                     <td>{e.correo}</td>
                                     <td>{e.rol}</td>
                                     <td>@mdo</td>
                                     <td>
-                                        <button onClick={()=>{handleViewUser()}} className="color-text" style={{fontSize:"10px"}}>
+                                        {
+                                            e.userGoogle == false &&
+                                            <button onClick={()=>{handleViewUser()}} className="color-text" style={{fontSize:"10px"}}>
                                             <Link to={`/usuarios/${e.id}`}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" style={{color:"white"}} width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
                                                     <path  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                                                 </svg>
                                             </Link>
                                         </button>
+                                        }
                                     </td>
                                 </tr>
                             )

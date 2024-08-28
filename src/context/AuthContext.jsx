@@ -2,7 +2,7 @@
 import { collection, getDocs } from "firebase/firestore";
 import { createContext, useContext,  useEffect,  useState } from "react";
 import { auth, db } from "../firebase/config";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "firebase/auth";
 // import { auth } from "../firebase/config";
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -50,8 +50,20 @@ export function AuthProvider({children}){
     return await signInWithPopup(auth, responseGoogle);
   };
 
+  const loginWithGithub = async () => {
+    const githubProvider = new GithubAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      const user = result.user;
+      return user;
+    } catch (error) {
+      console.error("Error durante el inicio de sesión con GitHub:", error);
+    }
+  };
+
+
     return (
-        <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser, loginWithGoogle}}>
+        <authContext.Provider value={{isRegister, askColl, handleLoginAndRegister, viewUser, handleViewUser, loginWithGoogle, loginWithGithub}}>
           {children}
         </authContext.Provider>
       );
